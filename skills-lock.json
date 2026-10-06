@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "design-auditor": {
+      "source": "Ashutos1997/claude-design-auditor-skill",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "d8ca43212a6729dbfb8288b9967b2c607eeb16512bd75c4234cfa8723b1b9648"
+    }
+  }
+}
