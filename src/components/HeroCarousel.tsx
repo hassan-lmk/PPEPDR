@@ -51,22 +51,37 @@ export function HeroCarousel() {
       aria-roledescription="carousel"
       aria-label="PPEPDR introduction"
     >
-      <div className="absolute inset-0">
-        {slides.map((slide, slideIndex) => (
-          <Image
-            key={slide.src}
-            src={slide.src}
-            alt={slide.alt}
-            fill
-            priority={slideIndex === 0}
-            sizes="100vw"
-            className={`object-cover brightness-[0.95] contrast-[1.02] transition-opacity duration-700 ease-out motion-reduce:transition-none ${
-              slideIndex === index
-                ? "opacity-100 hero-fade"
-                : "opacity-0"
-            }`}
-          />
-        ))}
+      <div className="absolute inset-0 overflow-hidden">
+        {slides.map((slide, slideIndex) => {
+          const active = slideIndex === index;
+          return (
+            <div
+              key={slide.src}
+              className={`absolute inset-0 transition-opacity duration-700 ease-out motion-reduce:transition-none ${
+                active ? "opacity-100" : "opacity-0"
+              }`}
+              aria-hidden={!active}
+            >
+              <div
+                className={`absolute inset-0 ${
+                  active && !reduceMotion ? "hero-kenburns" : ""
+                }`}
+              >
+                <Image
+                  src={slide.src}
+                  alt={slide.alt}
+                  fill
+                  priority={slideIndex === 0}
+                  quality={90}
+                  sizes="100vw"
+                  className={`object-cover brightness-[0.95] contrast-[1.02] ${
+                    active ? "hero-fade" : ""
+                  }`}
+                />
+              </div>
+            </div>
+          );
+        })}
         {/* Light scrim only — keep imagery visible */}
         <div className="absolute inset-0 bg-gradient-to-r from-ink/45 via-ink/20 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-ink/50 via-transparent to-ink/20" />

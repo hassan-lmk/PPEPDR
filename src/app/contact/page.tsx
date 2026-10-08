@@ -86,7 +86,13 @@ function IconMail() {
 
 export default function ContactPage() {
   return (
-    <PageShell title="Contact us" showSidebar={false} wide>
+    <PageShell
+      title="Contact us"
+      showSidebar={false}
+      wide
+      bannerSrc="/images/banner-contact.jpg"
+      bannerAlt="Modern office building at dusk"
+    >
       <div className="space-y-8">
         <p className="prose-copy max-w-3xl">
           Reach the Directorate General of Petroleum Concessions or LMK

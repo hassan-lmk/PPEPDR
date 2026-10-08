@@ -31,6 +31,16 @@ a {
   color: inherit;
 }
 
+a.cta-on-brand,
+button.cta-on-brand {
+  color: #fff;
+}
+
+a.cta-on-brand:hover,
+button.cta-on-brand:hover {
+  color: #fff;
+}
+
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;
@@ -210,6 +220,20 @@ a {
   animation: hero-fade 0.8s ease both;
 }
 
+@keyframes hero-kenburns {
+  from {
+    transform: scale(1);
+  }
+  to {
+    transform: scale(1.1);
+  }
+}
+
+.hero-kenburns {
+  animation: hero-kenburns 7.5s ease-out forwards;
+  will-change: transform;
+}
+
 .blink {
   animation: blinker 1s linear infinite;
 }
@@ -223,7 +247,8 @@ a {
 @media (prefers-reduced-motion: reduce) {
   .blink,
   .reveal,
-  .hero-fade {
+  .hero-fade,
+  .hero-kenburns {
     animation: none;
   }
 

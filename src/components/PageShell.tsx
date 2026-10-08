@@ -74,22 +74,31 @@ export function PageShell({
   children,
   showSidebar = true,
   wide = false,
+  bannerSrc = "/images/inner-banner-v2.jpg",
+  bannerAlt = "",
 }: {
   title: string;
   children: React.ReactNode;
   showSidebar?: boolean;
   wide?: boolean;
+  bannerSrc?: string;
+  bannerAlt?: string;
 }) {
   return (
     <>
-      <div className="relative h-28 w-full sm:h-36">
+      <div className="relative h-44 w-full sm:h-56 md:h-64 lg:h-72">
         <Image
-          src="/images/inner-banner.jpg"
-          alt=""
+          src={bannerSrc}
+          alt={bannerAlt}
           fill
           priority
+          quality={90}
           sizes="100vw"
           className="object-cover object-center"
+        />
+        <div
+          className="pointer-events-none absolute inset-0 bg-ink/45"
+          aria-hidden
         />
       </div>
       <div

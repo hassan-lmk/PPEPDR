@@ -9,7 +9,11 @@ export const metadata: Metadata = {
 
 export default function LoginPage() {
   return (
-    <PageShell title="Member Login">
+    <PageShell
+      title="Member Login"
+      bannerSrc="/images/banner-login.jpg"
+      bannerAlt="Secure login and data vault motif"
+    >
       <LoginForm />
     </PageShell>
   );

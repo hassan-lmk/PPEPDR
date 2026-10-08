@@ -34,7 +34,11 @@ export default async function AgreementsPage() {
   }
 
   return (
-    <PageShell title="Model Agreements">
+    <PageShell
+      title="Model Agreements"
+      bannerSrc="/images/banner-agreement-v3.jpg"
+      bannerAlt="Open concession contract folder and map on a sunlit boardroom desk"
+    >
       {errorMessage ? (
         <p className="prose-copy text-red-700">{errorMessage}</p>
       ) : (

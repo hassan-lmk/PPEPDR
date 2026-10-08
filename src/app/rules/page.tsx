@@ -34,7 +34,11 @@ export default async function RulesPage() {
   }
 
   return (
-    <PageShell title="Pakistan Petroleum (Exploration and Production) Rules">
+    <PageShell
+      title="Pakistan Petroleum (Exploration and Production) Rules"
+      bannerSrc="/images/banner-rules.jpg"
+      bannerAlt="Rules and regulatory standards motif"
+    >
       {errorMessage ? (
         <p className="prose-copy text-red-700">{errorMessage}</p>
       ) : (

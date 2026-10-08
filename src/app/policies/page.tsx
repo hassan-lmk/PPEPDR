@@ -35,7 +35,11 @@ export default async function PoliciesPage() {
   }
 
   return (
-    <PageShell title="Government Policies & Regulations">
+    <PageShell
+      title="Government Policies & Regulations"
+      bannerSrc="/images/banner-policies.jpg"
+      bannerAlt="Policy documents and regulatory seals motif"
+    >
       {errorMessage ? (
         <p className="prose-copy text-red-700">{errorMessage}</p>
       ) : (
