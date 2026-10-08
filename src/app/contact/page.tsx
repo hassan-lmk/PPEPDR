@@ -88,7 +88,6 @@ export default function ContactPage() {
   return (
     <PageShell
       title="Contact us"
-      showSidebar={false}
       wide
       bannerSrc="/images/banner-contact.jpg"
       bannerAlt="Modern office building at dusk"

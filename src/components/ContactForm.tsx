@@ -10,6 +10,8 @@ import {
 
 export function ContactForm() {
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
   const formErrorId = useId();
   const nameErrorId = useId();
@@ -24,8 +26,8 @@ export function ContactForm() {
       >
         <p className="font-semibold">Thank you for your message.</p>
         <p className="mt-2 text-neutral-700">
-          This preview does not email PPEPDR, so the message was not sent. In
-          production, your enquiry would be routed to the support team.
+          Your enquiry has been sent to the PPEPDR support team. We will get
+          back to you shortly.
         </p>
       </div>
     );
@@ -35,26 +37,59 @@ export function ContactForm() {
     <form
       className="grid gap-5"
       noValidate
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        const form = event.currentTarget;
+        const data = new FormData(form);
         const nextErrors: FieldErrors = {
           name: getRequiredError(data.get("name"), "Name"),
           email: getEmailError(data.get("email"), "E-mail"),
           phone: getRequiredError(data.get("phone"), "Contact number"),
         };
         setErrors(nextErrors);
+        setSubmitError("");
         if (firstError(nextErrors)) return;
-        setSent(true);
+
+        setSubmitting(true);
+        try {
+          const response = await fetch("/api/contact", {
+            method: "POST",
+            body: data,
+          });
+          const result = (await response.json().catch(() => null)) as {
+            ok?: boolean;
+            message?: string;
+            errors?: FieldErrors;
+          } | null;
+
+          if (!response.ok || !result?.ok) {
+            if (result?.errors) setErrors(result.errors);
+            setSubmitError(
+              result?.message ||
+                "Unable to send your message right now. Please try again later.",
+            );
+            return;
+          }
+
+          setSent(true);
+          form.reset();
+        } catch {
+          setSubmitError(
+            "Unable to send your message right now. Please try again later.",
+          );
+        } finally {
+          setSubmitting(false);
+        }
       }}
     >
-      {firstError(errors) ? (
+      {firstError(errors) || submitError ? (
         <p
           id={formErrorId}
           role="alert"
           className="border border-danger-border bg-danger-bg px-3 py-2 text-sm text-danger"
         >
-          Please fix the highlighted fields and try again.
+          {submitError ||
+            "Please fix the highlighted fields and try again."}
         </p>
       ) : null}
 
@@ -131,8 +166,12 @@ export function ContactForm() {
           Fields marked with <span className="text-danger">*</span> are
           required.
         </p>
-        <button type="submit" className="btn-primary min-h-11 w-full sm:w-auto">
-          Submit message
+        <button
+          type="submit"
+          disabled={submitting}
+          className="btn-primary min-h-11 w-full sm:w-auto disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {submitting ? "Sending…" : "Submit message"}
         </button>
       </div>
     </form>

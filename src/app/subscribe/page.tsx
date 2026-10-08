@@ -16,7 +16,6 @@ export default function SubscribePage() {
   return (
     <PageShell
       title="Subscribe"
-      showSidebar={false}
       wide
       bannerSrc="/images/banner-subscribe-v4.jpg"
       bannerAlt="Petroleum data workstation overlooking an energy horizon at dusk"

@@ -133,7 +133,6 @@ export default function AboutPage() {
   return (
     <PageShell
       title="About us"
-      showSidebar={false}
       wide
       bannerSrc="/images/banner-about.jpg"
       bannerAlt="Aerial basin landscape with seismic survey overlay"
@@ -232,9 +231,9 @@ export default function AboutPage() {
             {keyFunctions.map((item) => (
               <li
                 key={item.title}
-                className="group flex h-full flex-col border border-neutral-200 bg-white p-5 transition hover:border-accent/40 hover:shadow-[0_12px_30px_rgba(13,40,24,0.08)]"
+                className="group flex h-full flex-col border border-neutral-200 bg-white p-5 transition hover:border-[#00AC0E]/50 hover:shadow-[0_12px_30px_rgba(0,172,14,0.14)]"
               >
-                <span className="inline-flex h-11 w-11 items-center justify-center bg-brand text-white transition group-hover:bg-accent">
+                <span className="inline-flex h-11 w-11 items-center justify-center bg-brand text-white transition group-hover:bg-[#00AC0E]">
                   <FunctionIcon name={item.icon} />
                 </span>
                 <h3 className="mt-4 text-base font-semibold text-brand-dark">

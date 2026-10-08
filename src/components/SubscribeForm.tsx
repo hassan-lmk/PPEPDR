@@ -200,6 +200,8 @@ export function SubscribeForm({
       ? initialPlan
       : (memberships[0]?.name ?? "");
   const [sent, setSent] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
   const [errors, setErrors] = useState<FieldErrors>({});
   const [selectedPlan, setSelectedPlan] = useState(defaultPlan);
 
@@ -210,12 +212,11 @@ export function SubscribeForm({
         className="border border-brand/20 bg-sand/70 px-5 py-6 sm:px-6"
       >
         <p className="text-lg font-semibold text-brand-dark">
-          Request received (preview)
+          Request received
         </p>
         <p className="mt-2 max-w-2xl text-sm leading-6 text-neutral-700">
-          Thank you. This preview does not send subscription requests to
-          PetroBank, so nothing was submitted. In production, your details
-          would be routed for membership processing.
+          Thank you. Your subscription request has been sent to the PPEPDR
+          team for membership processing.
         </p>
       </div>
     );
@@ -227,9 +228,10 @@ export function SubscribeForm({
     <form
       className="space-y-8"
       noValidate
-      onSubmit={(event) => {
+      onSubmit={async (event) => {
         event.preventDefault();
-        const data = new FormData(event.currentTarget);
+        const form = event.currentTarget;
+        const data = new FormData(form);
         const nextErrors: FieldErrors = {};
 
         for (const field of allFields) {
@@ -250,16 +252,48 @@ export function SubscribeForm({
         );
 
         setErrors(nextErrors);
+        setSubmitError("");
         if (firstError(nextErrors)) return;
-        setSent(true);
+
+        setSubmitting(true);
+        try {
+          const response = await fetch("/api/subscribe", {
+            method: "POST",
+            body: data,
+          });
+          const result = (await response.json().catch(() => null)) as {
+            ok?: boolean;
+            message?: string;
+            errors?: FieldErrors;
+          } | null;
+
+          if (!response.ok || !result?.ok) {
+            if (result?.errors) setErrors(result.errors);
+            setSubmitError(
+              result?.message ||
+                "Unable to send your subscription request right now. Please try again later.",
+            );
+            return;
+          }
+
+          setSent(true);
+          form.reset();
+        } catch {
+          setSubmitError(
+            "Unable to send your subscription request right now. Please try again later.",
+          );
+        } finally {
+          setSubmitting(false);
+        }
       }}
     >
-      {firstError(errors) ? (
+      {firstError(errors) || submitError ? (
         <p
           role="alert"
           className="border border-danger-border bg-danger-bg px-3 py-2 text-sm text-danger"
         >
-          Please complete the required fields highlighted below.
+          {submitError ||
+            "Please complete the required fields highlighted below."}
         </p>
       ) : null}
 
@@ -331,14 +365,20 @@ export function SubscribeForm({
       </Section>
 
       <div className="flex flex-wrap items-center gap-3 border-t border-neutral-200 pt-6">
-        <button type="submit" className="btn-primary min-h-11 px-6 py-2.5">
-          Submit subscription request
+        <button
+          type="submit"
+          disabled={submitting}
+          className="btn-primary min-h-11 px-6 py-2.5 disabled:cursor-not-allowed disabled:opacity-70"
+        >
+          {submitting ? "Sending…" : "Submit subscription request"}
         </button>
         <button
           type="reset"
-          className="btn-secondary min-h-11"
+          disabled={submitting}
+          className="btn-secondary min-h-11 disabled:cursor-not-allowed disabled:opacity-70"
           onClick={() => {
             setErrors({});
+            setSubmitError("");
             setSelectedPlan(defaultPlan);
           }}
         >
