@@ -1,3 +1,5 @@
+import { getSupabaseAnonKey, getSupabaseUrl } from "@/lib/supabase";
+
 export type GovernmentPolicy = {
   id: string;
   category: string;
@@ -31,29 +33,55 @@ export function displayCategoryLabel(category: string): string {
   return CATEGORY_DISPLAY_LABELS[category] ?? category;
 }
 
-const PPIS_POLICIES_URL =
-  "https://ppisonline.com/api/government-policies";
-
 const REVALIDATE_SECONDS = 600;
 
+function groupPolicies(
+  policies: GovernmentPolicy[],
+): GovernmentPoliciesResponse {
+  const sorted = [...policies].sort((a, b) => {
+    if (a.display_order !== b.display_order) {
+      return a.display_order - b.display_order;
+    }
+    return a.title.localeCompare(b.title);
+  });
+
+  const data: Record<string, GovernmentPolicy[]> = {};
+  for (const policy of sorted) {
+    if (!data[policy.category]) data[policy.category] = [];
+    data[policy.category].push(policy);
+  }
+
+  return { data, allPolicies: sorted };
+}
+
 export async function fetchGovernmentPolicies(): Promise<GovernmentPoliciesResponse> {
-  const response = await fetch(PPIS_POLICIES_URL, {
+  const url = getSupabaseUrl();
+  const anonKey = getSupabaseAnonKey();
+  const endpoint = new URL(`${url}/rest/v1/government_policies`);
+  endpoint.searchParams.set("is_active", "eq.true");
+  endpoint.searchParams.set("order", "display_order.asc,title.asc");
+  endpoint.searchParams.set(
+    "select",
+    "id,category,title,description,file_url,file_size,file_type,display_order,is_active,created_at,updated_at",
+  );
+
+  const response = await fetch(endpoint, {
     next: { revalidate: REVALIDATE_SECONDS },
-    headers: { Accept: "application/json" },
+    headers: {
+      Accept: "application/json",
+      apikey: anonKey,
+      Authorization: `Bearer ${anonKey}`,
+    },
   });
 
   if (!response.ok) {
     throw new Error(
-      `Failed to fetch government policies (${response.status})`,
+      `Failed to fetch government policies from ${url} (${response.status})`,
     );
   }
 
-  const payload = (await response.json()) as GovernmentPoliciesResponse;
-
-  return {
-    data: payload.data ?? {},
-    allPolicies: payload.allPolicies ?? [],
-  };
+  const rows = (await response.json()) as GovernmentPolicy[];
+  return groupPolicies(rows ?? []);
 }
 
 export function filterPoliciesByCategory(
