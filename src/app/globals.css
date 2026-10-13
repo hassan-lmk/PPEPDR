@@ -41,6 +41,11 @@ button.cta-on-brand:hover {
   color: #fff;
 }
 
+/* Outline brand CTAs that fill on hover — beat `a { color: inherit }` */
+a.cta-outline-brand:hover {
+  color: #fff;
+}
+
 :focus-visible {
   outline: 2px solid var(--color-accent);
   outline-offset: 2px;

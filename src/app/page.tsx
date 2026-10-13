@@ -44,7 +44,7 @@ export default function HomePage() {
               </Link>
               <Link
                 href="/subscribe"
-                className="border border-brand px-6 py-3 font-medium text-brand-dark transition hover:bg-brand hover:text-white"
+                className="cta-outline-brand border border-brand px-6 py-3 font-medium text-brand-dark transition hover:bg-brand"
               >
                 View membership options
               </Link>
