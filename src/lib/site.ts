@@ -15,11 +15,6 @@ export const navItems: NavItem[] = [
     external: true,
   },
   { label: "Subscribe", href: "/subscribe" },
-  {
-    label: "Data Review Request",
-    href: "https://www.ppisonline.com/data-review",
-    external: true,
-  },
   { label: "Contact Us", href: "/contact" },
 ];
 

@@ -23,7 +23,7 @@ export function Footer() {
                 alt="PPEPDR"
                 width={200}
                 height={90}
-                className="h-14 w-auto sm:h-16"
+                className="h-14 w-auto brightness-0 invert sm:h-16"
               />
             </Link>
             <p className="mt-4 max-w-lg text-2xl font-semibold leading-snug">
