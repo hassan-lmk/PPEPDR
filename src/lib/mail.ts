@@ -19,6 +19,10 @@ export function getMailConfig() {
   const adminEmail = requiredEnv("SMTP_ADMIN_EMAIL");
   const fromEmail =
     process.env.SMTP_FROM_EMAIL?.trim() || adminEmail;
+  const cc = (process.env.SMTP_CC || "")
+    .split(",")
+    .map((email) => email.trim())
+    .filter(Boolean);
 
   return {
     host,
@@ -28,6 +32,7 @@ export function getMailConfig() {
     senderName,
     adminEmail,
     fromEmail,
+    cc,
     secure: port === 465,
   };
 }
@@ -63,6 +68,7 @@ export async function sendAdminEmail({
   await transport.sendMail({
     from: `"${config.senderName}" <${config.fromEmail}>`,
     to: config.adminEmail,
+    cc: config.cc.length > 0 ? config.cc : undefined,
     replyTo: replyTo || undefined,
     subject,
     text,

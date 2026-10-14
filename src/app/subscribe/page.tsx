@@ -8,8 +8,8 @@ export const metadata: Metadata = {
 };
 
 const downloadCharges = [
-  { label: "Seismic data", value: "US $3 per line kilometer" },
-  { label: "Well data", value: "US $53 per well" },
+  { label: "Seismic data", value: "US$ 4 per line kilometer" },
+  { label: "Well data", value: "US$ 56 per well" },
 ];
 
 export default function SubscribePage() {

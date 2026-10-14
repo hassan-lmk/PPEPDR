@@ -110,7 +110,7 @@ export const keyFunctions: KeyFunction[] = [
 export const memberships = [
   {
     name: "Full Members",
-    price: "US$ 21,000",
+    price: "US$ 22,050",
     period: "annum",
     summary: "Full membership for companies",
     benefits: [
@@ -123,7 +123,7 @@ export const memberships = [
   },
   {
     name: "Associate Members",
-    price: "US$ 12,600",
+    price: "US$ 13,230",
     period: "annum",
     summary: "Associate membership for companies",
     benefits: [
@@ -136,10 +136,10 @@ export const memberships = [
   },
   {
     name: "Non Members",
-    price: "US$ 105",
+    price: "US$ 110",
     period: "hour",
     summary: "Hourly rate for non-member companies within Pakistan",
-    benefits: ["A subscription fee of US $105 per hour to access database"],
+    benefits: ["A subscription fee of US$ 110 per hour to access database"],
   },
   {
     name: "Temporary Members",

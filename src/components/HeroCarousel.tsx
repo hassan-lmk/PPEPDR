@@ -93,7 +93,7 @@ export function HeroCarousel() {
             PPEPDR
           </p>
           <h1 className="text-4xl font-bold leading-[1.08] tracking-tight text-white sm:text-5xl lg:text-6xl">
-            Pakistan Petroleum Exploration &amp; Production Data
+            Pakistan Petroleum Exploration &amp; Production Data Repository
           </h1>
           <p className="mt-5 max-w-xl text-base leading-relaxed text-white/90 sm:text-lg">
             Secure online access to quality-assured seismic, well, and physical
